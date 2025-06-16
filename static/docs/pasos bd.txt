@@ -1,0 +1,7 @@
+para crear respaldo de la base de datos
+
+"C:\Program Files\PostgreSQL\17\bin\pg_dump.exe" -U postgres -W -h localhost -d gestionventasinventario -f "C:\Users\edgar\Desktop\respaldo_completo.sql"
+
+para restaurar copia de la base de datos 
+
+"C:\Program Files\PostgreSQL\17\bin\pg_dump.exe"  -U postgres -d prueba -f "C:\Users\edgar\Desktop\respaldo_completo.sql"

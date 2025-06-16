@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración - Variedades Doña Leidy</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .main-container {
+        display: flex;
+        flex: 1;
+      }
+
+      .content {
+        flex: 1;
+        padding: 30px;
+        margin-left: 280px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: margin-left 0.3s ease;
+      }
+
+      .content.expanded {
+        margin-left: 80px;
+      }
+
+      .page-title {
+        margin-bottom: 30px;
+        color: #1a73e8;
+        font-size: 28px;
+        font-weight: 600;
+        text-align: center;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .config-form-container {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 500px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .config-form-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #1a73e8, #34a853);
+      }
+
+      .form-title {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        color: #1a73e8;
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 10px;
+        color: #5f6368;
+        font-size: 14px;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e8eaed;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: #ffffff;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+      }
+
+      .btn-update {
+        width: 100%;
+        background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+        box-shadow: 0 2px 6px rgba(26, 115, 232, 0.2);
+      }
+
+      .btn-update:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+      }
+
+      .validation-message {
+        color: #d93025;
+        font-size: 12px;
+        margin-top: 6px;
+        display: none;
+        padding: 4px 8px;
+        background: #fce8e6;
+        border-radius: 4px;
+        border-left: 3px solid #d93025;
+      }
+
+      .validation-message.show {
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .main-container {
+          flex-direction: column;
+        }
+
+        .content {
+          margin-left: 0 !important;
+          padding: 20px;
+        }
+
+        .config-form-container {
+          padding: 30px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'm02_gestion/zsub_header.html' %}
+    <div class="main-container">
+      {% include 'm02_gestion/zsub_menu.html' %}
+      <main class="content">
+        <div class="config-form-container">
+          <h1 class="page-title">Configuración</h1>
+          <h2 class="form-title">Actualizar Contraseña</h2>
+
+          <form id="password-form" onsubmit="updatePassword(event)">
+            <div class="form-group">
+              <label class="form-label" for="usuario">Usuario</label>
+              <input
+                type="text"
+                class="form-input"
+                id="usuario"
+                name="usuario"
+                required
+              />
+              <div class="validation-message" id="usuario-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="password-old"
+                >Contraseña Actual</label
+              >
+              <input
+                type="password"
+                class="form-input"
+                id="password-old"
+                name="password-old"
+                required
+              />
+              <div class="validation-message" id="password-old-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="password-new"
+                >Contraseña Nueva</label
+              >
+              <input
+                type="password"
+                class="form-input"
+                id="password-new"
+                name="password-new"
+                required
+              />
+              <div class="validation-message" id="password-new-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="password-confirm"
+                >Confirmar Contraseña Nueva</label
+              >
+              <input
+                type="password"
+                class="form-input"
+                id="password-confirm"
+                name="password-confirm"
+                required
+              />
+              <div class="validation-message" id="password-confirm-error"></div>
+            </div>
+
+            <button type="submit" class="btn-update">
+              Actualizar Contraseña
+            </button>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function updatePassword(event) {
+        event.preventDefault();
+        clearValidationMessages();
+
+        const usuario = document.getElementById("usuario").value.trim();
+        const passwordOld = document.getElementById("password-old").value;
+        const passwordNew = document.getElementById("password-new").value;
+        const passwordConfirm =
+          document.getElementById("password-confirm").value;
+
+        let isValid = true;
+
+        if (!usuario) {
+          showValidationMessage("usuario-error", "El usuario es requerido");
+          isValid = false;
+        }
+
+        if (!passwordOld) {
+          showValidationMessage(
+            "password-old-error",
+            "La contraseña actual es requerida"
+          );
+          isValid = false;
+        }
+
+        if (!passwordNew) {
+          showValidationMessage(
+            "password-new-error",
+            "La contraseña nueva es requerida"
+          );
+          isValid = false;
+        } else if (passwordNew.length < 6) {
+          showValidationMessage(
+            "password-new-error",
+            "Debe tener al menos 6 caracteres"
+          );
+          isValid = false;
+        }
+
+        if (!passwordConfirm) {
+          showValidationMessage(
+            "password-confirm-error",
+            "Debe confirmar la contraseña nueva"
+          );
+          isValid = false;
+        } else if (passwordNew !== passwordConfirm) {
+          showValidationMessage(
+            "password-confirm-error",
+            "Las contraseñas no coinciden"
+          );
+          isValid = false;
+        }
+
+        if (passwordOld === passwordNew) {
+          showValidationMessage(
+            "password-new-error",
+            "La nueva contraseña debe ser diferente"
+          );
+          isValid = false;
+        }
+
+        if (isValid) {
+          fetch("/actualizar_clave", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              usuario: usuario,
+              clave_actual: passwordOld,
+              clave_nueva: passwordNew,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert(data.message);
+                document.getElementById("password-form").reset();
+              } else {
+                alert(data.message);
+              }
+            })
+            .catch((error) => {
+              console.error("Error al actualizar contraseña:", error);
+              alert("Error en el servidor al actualizar la contraseña.");
+            });
+        }
+      }
+
+      function showValidationMessage(elementId, message) {
+        const element = document.getElementById(elementId);
+        element.textContent = message;
+        element.classList.add("show");
+      }
+
+      function clearValidationMessages() {
+        const messages = document.querySelectorAll(".validation-message");
+        messages.forEach((message) => {
+          message.classList.remove("show");
+          message.textContent = "";
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll(".form-input");
+        inputs.forEach((input) => {
+          input.addEventListener("input", function () {
+            const errorElement = document.getElementById(this.id + "-error");
+            if (errorElement) {
+              errorElement.classList.remove("show");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

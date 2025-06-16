@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reporte de Ventas - Variedades Doña Leidy</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Contenido principal */
+      .main-container {
+        display: flex;
+        flex: 1;
+      }
+
+      /* Contenido de la página */
+      .content {
+        flex: 1;
+        padding: 30px;
+        margin-left: 280px;
+        transition: margin-left 0.3s ease;
+      }
+
+      .content.expanded {
+        margin-left: 80px;
+      }
+
+      .page-title {
+        margin-bottom: 30px;
+        color: #1a73e8;
+        font-size: 28px;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Sección de filtros */
+      .filter-section {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .filter-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #1a73e8, #34a853);
+      }
+
+      .filter-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #1a73e8;
+      }
+
+      .filter-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 20px;
+        align-items: end;
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .filter-label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #5f6368;
+        font-size: 14px;
+      }
+
+      .filter-input {
+        padding: 12px 15px;
+        border: 2px solid #e8eaed;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: #ffffff;
+      }
+
+      .filter-input:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+      }
+
+      .btn-filter {
+        background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        height: fit-content;
+        box-shadow: 0 2px 6px rgba(26, 115, 232, 0.2);
+      }
+
+      .btn-filter:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+      }
+
+      /* Sección de tabla */
+      .table-section {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .table-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #1a73e8, #34a853);
+      }
+
+      /* Contenedor con scroll para la tabla */
+      .table-container {
+        max-height: 500px;
+        overflow-y: auto;
+        border: 1px solid #e8eaed;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        background: white;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+      }
+
+      .sales-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      .sales-table th {
+        text-align: left;
+        padding: 16px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+        color: #1a73e8;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e0e7ff;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .sales-table td {
+        padding: 16px;
+        border-bottom: 1px solid #edf2f7;
+        color: #5f6368;
+        font-size: 14px;
+        transition: all 0.2s ease;
+      }
+
+      .sales-table tbody tr {
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .sales-table tbody tr:hover {
+        background-color: #f8fafc;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      }
+
+      .sales-table tbody tr.selected {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .sales-table tbody tr.selected:hover {
+        background-color: #e3f2fd;
+      }
+
+      /* Estilo para la columna de total */
+      .sales-table td:nth-child(3) {
+        font-weight: 600;
+        color: #1a73e8;
+        text-align: right;
+      }
+
+      /* Estilo para el encabezado de total */
+      .sales-table th:nth-child(3) {
+        text-align: right;
+      }
+
+      /* Estilo para las columnas de fecha y hora */
+      .sales-table td:nth-child(4),
+      .sales-table td:nth-child(5) {
+        color: #718096;
+        font-size: 13px;
+      }
+
+      /* Sección de botones de reporte */
+      .report-section {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .report-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #1a73e8, #34a853);
+      }
+
+      .report-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .btn {
+        padding: 14px 28px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-monthly {
+        background: linear-gradient(135deg, #34a853 0%, #2d9249 100%);
+        color: white;
+      }
+
+      .btn-monthly:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(52, 168, 83, 0.3);
+      }
+
+      .btn-generate {
+        background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+        color: white;
+      }
+
+      .btn-generate:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+      }
+
+      /* Información de selección */
+      .selection-info {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-radius: 8px;
+        border-left: 4px solid #34a853;
+        display: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .selection-info.show {
+        display: block;
+      }
+
+      /* Personalizar scrollbar */
+      .table-container::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .table-container::-webkit-scrollbar-track {
+        background: #f8fafc;
+        border-radius: 4px;
+      }
+
+      .table-container::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 4px;
+      }
+
+      .table-container::-webkit-scrollbar-thumb:hover {
+        background: #a0aec0;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .main-container {
+          flex-direction: column;
+        }
+
+        .content {
+          margin-left: 0 !important;
+          padding: 20px;
+        }
+
+        .filter-row {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .report-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .btn {
+          width: 100%;
+          max-width: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Incluir encabezado -->
+    {% include 'm02_gestion/zsub_header.html' %}
+
+    <!-- Contenido principal -->
+    <div class="main-container">
+      <!-- Incluir menú lateral -->
+      {% include 'm02_gestion/zsub_menu.html' %}
+
+      <!-- Contenido de la página -->
+      <main class="content">
+        <h1 class="page-title">Reporte de Ventas</h1>
+
+        <!-- Sección de filtros -->
+        <section class="filter-section">
+          <h2 class="filter-title">Filtrar Reportes</h2>
+          <div class="filter-row">
+            <div class="filter-group">
+              <label class="filter-label">Fecha Desde</label>
+              <input type="date" class="filter-input" id="fecha-desde" />
+            </div>
+            <div class="filter-group">
+              <label class="filter-label">Fecha Hasta</label>
+              <input type="date" class="filter-input" id="fecha-hasta" />
+            </div>
+            <button class="btn-filter" onclick="filtrarVentas()">
+              Filtrar
+            </button>
+          </div>
+        </section>
+
+        <!-- Sección de tabla -->
+        <section class="table-section">
+          <div class="selection-info" id="selection-info">
+            <strong>Venta seleccionada:</strong>
+            <span id="selected-info"></span>
+          </div>
+
+          <!-- Contenedor con scroll para la tabla -->
+          <div class="table-container">
+            <table class="sales-table">
+              <thead>
+                <tr>
+                  <th>Nv</th>
+                  <th>Cliente</th>
+                  <th>Total</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                </tr>
+              </thead>
+              <tbody id="sales-tbody">
+                {% for venta in ventas %}
+                <tr onclick="selectRow(this)">
+                  <td>{{ venta[0] }}</td>
+                  <td>{{ venta[1] }}</td>
+                  <td>${{ '%.2f'|format(venta[2]) }}</td>
+                  <td>{{ venta[3] }}</td>
+                  <td>{{ venta[4] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Sección de botones de reporte -->
+        <section class="report-section">
+          <div class="report-buttons">
+            <button class="btn btn-monthly" onclick="generarReporteMensual()">
+              Generar Reporte Mensual
+            </button>
+            <button class="btn btn-generate" onclick="generarReporte()">
+              Generar Reporte
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      let selectedRow = null;
+
+      // Función para seleccionar una sola fila
+      function selectRow(row) {
+        // Si hay una fila previamente seleccionada, deseleccionarla
+        if (selectedRow) {
+          selectedRow.classList.remove("selected");
+        }
+
+        // Si se hace clic en la misma fila seleccionada, deseleccionarla
+        if (selectedRow === row) {
+          selectedRow = null;
+        } else {
+          // Seleccionar la nueva fila
+          row.classList.add("selected");
+          selectedRow = row;
+        }
+
+        updateSelectionInfo();
+      }
+
+      // Actualizar información de selección
+      function updateSelectionInfo() {
+        const selectionInfo = document.getElementById("selection-info");
+        const selectedInfo = document.getElementById("selected-info");
+
+        if (selectedRow) {
+          const nv = selectedRow.cells[0].textContent;
+          const cliente = selectedRow.cells[1].textContent;
+          const total = selectedRow.cells[2].textContent;
+
+          selectedInfo.textContent = `Nv: ${nv} - ${cliente} - ${total}`;
+          selectionInfo.classList.add("show");
+        } else {
+          selectionInfo.classList.remove("show");
+        }
+      }
+
+      // Función para filtrar ventas
+      function filtrarVentas() {
+        const fechaDesde = document.getElementById("fecha-desde").value;
+        const fechaHasta = document.getElementById("fecha-hasta").value;
+
+        if (!fechaDesde || !fechaHasta) {
+          alert("Por favor seleccione ambas fechas para filtrar");
+          return;
+        }
+
+        if (fechaDesde > fechaHasta) {
+          alert("La fecha desde no puede ser mayor que la fecha hasta");
+          return;
+        }
+
+        window.location.href = `/reportes/ventas?desde=${fechaDesde}&hasta=${fechaHasta}`;
+      }
+
+      // Función para generar reporte mensual
+      function generarReporteMensual() {
+        const fechaDesde = document.getElementById("fecha-desde").value;
+        const fechaHasta = document.getElementById("fecha-hasta").value;
+
+        if (!fechaDesde || !fechaHasta) {
+          alert("Por favor seleccione ambas fechas para el reporte mensual");
+          return;
+        }
+
+        if (fechaDesde > fechaHasta) {
+          alert("La fecha desde no puede ser mayor que la fecha hasta");
+          return;
+        }
+
+        // Abre la ruta que generará el PDF
+        window.open(
+          `/reportes/ventas/pdf_mensual?desde=${fechaDesde}&hasta=${fechaHasta}`,
+          "_blank"
+        );
+      }
+      // Función para generar reporte
+      function generarReporte() {
+        if (!selectedRow) {
+          alert("Por favor seleccione una venta para generar el reporte");
+          return;
+        }
+
+        const nv = selectedRow.cells[0].textContent;
+
+        // Redirige a la ruta Flask para generar el PDF
+        window.open(`/reportes/ventas/pdf/${nv}`, "_blank");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Variedades Doña Leidy</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-container {
+        display: flex;
+        width: 900px;
+        height: 550px;
+        background-color: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .left-panel {
+        width: 45%;
+        background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .left-panel::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 60%
+        );
+        animation: rotate 20s linear infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .logo {
+        width: 130px;
+        height: 130px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+      }
+
+      .logo svg {
+        width: 65px;
+        height: 65px;
+        fill: #1a73e8;
+      }
+
+      .store-name {
+        font-size: 28px;
+        font-weight: bold;
+        margin-top: 20px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+      }
+
+      .right-panel {
+        width: 55%;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: white;
+      }
+
+      h1 {
+        margin-bottom: 35px;
+        color: #1a73e8;
+        font-size: 32px;
+        font-weight: 600;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+        position: relative;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e1e5ea;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #1a73e8;
+        background-color: white;
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+      }
+
+      button {
+        background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2);
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26, 115, 232, 0.3);
+      }
+
+      .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .login-container {
+          flex-direction: column;
+          width: 95%;
+          height: auto;
+          margin: 20px;
+        }
+
+        .left-panel,
+        .right-panel {
+          width: 100%;
+          padding: 30px;
+        }
+
+        .left-panel {
+          padding: 40px 30px;
+        }
+
+        .logo {
+          width: 100px;
+          height: 100px;
+        }
+
+        .logo svg {
+          width: 50px;
+          height: 50px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="left-panel">
+        <div class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"
+            />
+          </svg>
+        </div>
+        <div class="store-name">Variedades Doña Leidy</div>
+      </div>
+      <div class="right-panel">
+        <h1>Bienvenido</h1>
+        <form action="/pagar" method="post">
+          <div class="form-group">
+            <label for="username">Usuario</label>
+            <input
+              type="text"
+              id="username"
+              name="txt_usuario"
+              placeholder="Ingrese su usuario"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              name="txt_clave"
+              placeholder="Ingrese su contraseña"
+            />
+          </div>
+          <button type="submit">Iniciar sesión</button>
+        </form>
+
+        {% if mensaje %}
+        <div class="error-message">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+            />
+            <path
+              d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
+            />
+          </svg>
+          {{ mensaje }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
