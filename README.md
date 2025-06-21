@@ -57,7 +57,11 @@ source entorno/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Configurar la base de datos PostgreSQL y actualizar la cadena de conexión en `modelos/modelo00_bd.py`
+4. Configurar la base de datos PostgreSQL:
+
+   - Crear una base de datos PostgreSQL
+   - Ejecutar el script SQL ubicado en `static/docs/script.sql` para crear las tablas y datos iniciales
+   - Actualizar la cadena de conexión en `modelos/modelo00_bd.py` con los datos de tu base de datos
 
 5. Ejecutar la aplicación:
 
@@ -101,14 +105,6 @@ La aplicación estará disponible en `http://127.0.0.1:5000`
 - **Frontend**: HTML, CSS, JavaScript
 - **Framework CSS**: Bootstrap
 
-## Contribución
+## AUTOR
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Edgar Lopez
