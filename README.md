@@ -71,6 +71,9 @@ python app.py
 
 La aplicación estará disponible en `http://127.0.0.1:5000`
 
+EL usuraio para acceder al sistema es : admin
+Contraseña: 123456
+
 ## Módulos Principales
 
 ### Login (bd01_login)
